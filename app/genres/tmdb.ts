@@ -1,3 +1,5 @@
+import { tmdbGetJson } from "@/app/lib/tmdb-server";
+
 export type Genre = {
   id: number;
   name: string;
@@ -40,17 +42,10 @@ type GenreWithBackdropCandidates = Genre & {
 const MAX_BACKDROP_CANDIDATES = 12;
 
 export async function getMovieGenres(accessToken: string): Promise<Genre[]> {
-  const res = await fetch("https://api.themoviedb.org/3/genre/movie/list", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const { genres } = await tmdbGetJson<GenreResponse>({
+    accessToken,
+    path: "/genre/movie/list",
   });
-
-  if (!res.ok) {
-    throw new Error(`TMDB request failed with status ${res.status}.`);
-  }
-
-  const { genres } = (await res.json()) as GenreResponse;
   return genres;
 }
 
@@ -62,20 +57,15 @@ export async function getGenresWithBackdrops(
   const genresWithBackdropCandidates: GenreWithBackdropCandidates[] = await Promise.all(
     genres.map(async (genre) => {
       try {
-        const discoverRes = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?with_genres=${genre.id}&sort_by=popularity.desc&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+        const { results } = await tmdbGetJson<DiscoverResponse>({
+          accessToken,
+          path: "/discover/movie",
+          query: {
+            with_genres: genre.id,
+            sort_by: "popularity.desc",
+            page: 1,
           },
-        );
-
-        if (!discoverRes.ok) {
-          return { ...genre, backdropCandidates: [] };
-        }
-
-        const { results } = (await discoverRes.json()) as DiscoverResponse;
+        });
         const backdropCandidates = [
           ...new Set(
             results
@@ -127,20 +117,15 @@ export async function getMoviesByGenre(
   accessToken: string,
   genreId: number,
 ): Promise<GenreMovie[]> {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=1`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const { results } = await tmdbGetJson<DiscoverResponse>({
+    accessToken,
+    path: "/discover/movie",
+    query: {
+      with_genres: genreId,
+      sort_by: "popularity.desc",
+      page: 1,
     },
-  );
-
-  if (!res.ok) {
-    throw new Error(`TMDB request failed with status ${res.status}.`);
-  }
-
-  const { results } = (await res.json()) as DiscoverResponse;
+  });
 
   return results.map((movie) => ({
     id: movie.id,
@@ -153,17 +138,10 @@ export async function getMoviesByGenre(
 }
 
 export async function getTrendingMovies(accessToken: string): Promise<GenreMovie[]> {
-  const res = await fetch("https://api.themoviedb.org/3/trending/movie/day", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const { results } = await tmdbGetJson<DiscoverResponse>({
+    accessToken,
+    path: "/trending/movie/day",
   });
-
-  if (!res.ok) {
-    throw new Error(`TMDB request failed with status ${res.status}.`);
-  }
-
-  const { results } = (await res.json()) as DiscoverResponse;
 
   return results.map((movie) => ({
     id: movie.id,

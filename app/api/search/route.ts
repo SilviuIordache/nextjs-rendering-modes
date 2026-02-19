@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { tmdbGetJson } from "@/app/lib/tmdb-server";
 
 export const dynamic = "force-dynamic";
+
+type SearchMovie = {
+  adult?: boolean;
+};
+
+type SearchResponse = {
+  results: SearchMovie[];
+};
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("query")?.trim() ?? "";
@@ -17,22 +26,25 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+  try {
+    const data = await tmdbGetJson<SearchResponse>({
+      accessToken,
+      path: "/search/movie",
+      query: {
+        query,
+        include_adult: false,
+        language: "en-US",
+        region: "US",
       },
-    },
-  );
+    });
 
-  if (!res.ok) {
-    return NextResponse.json(
-      { error: `TMDB request failed with status ${res.status}.` },
-      { status: res.status },
-    );
+    return NextResponse.json({
+      ...data,
+      // Defensive filter in case upstream content still includes adult titles.
+      results: (data.results ?? []).filter((movie) => movie.adult !== true),
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "TMDB request failed.";
+    return NextResponse.json({ error: message }, { status: 502 });
   }
-
-  const data = await res.json();
-  return NextResponse.json(data);
 }

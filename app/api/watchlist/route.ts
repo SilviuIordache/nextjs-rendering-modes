@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { GenreMovie } from "@/app/genres/tmdb";
+import { tmdbGetJson } from "@/app/lib/tmdb-server";
 
 type TmdbMovieResponse = {
   id: number;
@@ -47,17 +48,10 @@ export async function POST(req: Request) {
   const movies = await Promise.all(
     ids.map(async (id) => {
       try {
-        const res = await fetch(`https://api.themoviedb.org/3/movie/${id}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        const movie = await tmdbGetJson<TmdbMovieResponse>({
+          accessToken,
+          path: `/movie/${id}`,
         });
-
-        if (!res.ok) {
-          return null;
-        }
-
-        const movie = (await res.json()) as TmdbMovieResponse;
         const mappedMovie: GenreMovie = {
           id: movie.id,
           title: movie.title,
