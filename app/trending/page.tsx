@@ -32,6 +32,7 @@ export default async function TrendingPage() {
             modeFullName="Incremental Static Regeneration"
             modeDescription="Revalidates in background every 10 minutes."
             generatedAtIso={generatedAtIso}
+            showRelative
           />
         </header>
 

@@ -28,12 +28,16 @@ function formatRelative(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
   if (diffMs <= 0) return "just now";
 
+  const totalMinutes = Math.floor(diffMs / (1000 * 60));
+  if (totalMinutes < 60) return `${totalMinutes}m ago`;
+
   const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
   const days = Math.floor(totalHours / 24);
   const hours = totalHours % 24;
+  const minutes = totalMinutes % 60;
 
   if (days > 0) return `${days}d ${hours}h ago`;
-  return `${hours}h ago`;
+  return `${hours}h ${minutes}m ago`;
 }
 
 export default function RenderModeCard({
