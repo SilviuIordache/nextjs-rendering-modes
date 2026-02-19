@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Clock3, RefreshCw, Server, Wrench } from "lucide-react";
+import { Clock3, Monitor, RefreshCw, Server, Wrench } from "lucide-react";
 
-type GeneratedAtCardProps = {
+type RenderModeCardProps = {
   mode: string;
   modeFullName: string;
   modeDescription: string;
-  modeIcon: "ssg" | "isr" | "ssr";
+  modeIcon: "ssg" | "isr" | "ssr" | "csr";
   generatedAtIso: string;
   showRelative?: boolean;
 };
@@ -36,14 +36,14 @@ function formatRelative(iso: string) {
   return `${hours}h ago`;
 }
 
-export default function GeneratedAtCard({
+export default function RenderModeCard({
   mode,
   modeFullName,
   modeDescription,
   modeIcon,
   generatedAtIso,
   showRelative = false,
-}: GeneratedAtCardProps) {
+}: RenderModeCardProps) {
   const absolute = useMemo(() => formatGeneratedAt(generatedAtIso), [generatedAtIso]);
   const [relative, setRelative] = useState("just now");
 
@@ -61,6 +61,7 @@ export default function GeneratedAtCard({
     ssg: Wrench,
     isr: RefreshCw,
     ssr: Server,
+    csr: Monitor,
   }[modeIcon];
 
   return (

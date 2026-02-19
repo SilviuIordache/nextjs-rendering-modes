@@ -1,4 +1,4 @@
-import GeneratedAtCard from "@/app/components/GeneratedAtCard";
+import RenderModeCard from "@/app/components/RenderModeCard";
 import MovieCard from "@/app/components/MovieCard";
 import { getTrendingMovies } from "@/app/genres/tmdb";
 
@@ -26,7 +26,7 @@ export default async function TrendingPage() {
               ISR demo: this page revalidates every 60 seconds.
             </p>
           </div>
-          <GeneratedAtCard
+          <RenderModeCard
             mode="ISR"
             modeIcon="isr"
             modeFullName="Incremental Static Regeneration"

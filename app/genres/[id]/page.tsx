@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import GeneratedAtCard from "@/app/components/GeneratedAtCard";
+import RenderModeCard from "@/app/components/RenderModeCard";
 import MovieCard from "@/app/components/MovieCard";
 import { getMovieGenres, getMoviesByGenre } from "../tmdb";
 
@@ -67,7 +67,7 @@ export default async function GenrePage({ params }: GenrePageProps) {
               Popular titles in this genre.
             </p>
           </div>
-          <GeneratedAtCard
+          <RenderModeCard
             mode="SSG"
             modeIcon="ssg"
             modeFullName="Static Site Generation"

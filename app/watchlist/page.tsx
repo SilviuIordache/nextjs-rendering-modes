@@ -1,4 +1,4 @@
-import GeneratedAtCard from "@/app/components/GeneratedAtCard";
+import RenderModeCard from "@/app/components/RenderModeCard";
 import WatchlistGrid from "./WatchlistGrid";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ export default function WatchlistPage() {
               Movies saved in your local watchlist.
             </p>
           </div>
-          <GeneratedAtCard
+          <RenderModeCard
             mode="SSR"
             modeIcon="ssr"
             modeFullName="Server-Side Rendering"

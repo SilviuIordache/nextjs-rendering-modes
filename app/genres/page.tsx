@@ -1,5 +1,5 @@
 import Link from "next/link";
-import GeneratedAtCard from "@/app/components/GeneratedAtCard";
+import RenderModeCard from "@/app/components/RenderModeCard";
 import GenreCard from "./GenreCard";
 import { getGenresWithBackdrops } from "./tmdb";
 
@@ -27,7 +27,7 @@ export default async function GenresPage() {
               Pick a genre to continue to its page.
             </p>
           </div>
-          <GeneratedAtCard
+          <RenderModeCard
             mode="SSG"
             modeIcon="ssg"
             modeFullName="Static Site Generation"
