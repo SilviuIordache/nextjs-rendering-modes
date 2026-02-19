@@ -1,12 +1,21 @@
+export type Genre = {
+  id: number;
+  name: string;
+};
+
 export type GenreWithBackdrop = {
   id: number;
   name: string;
   backdrop: string | null;
 };
 
-type Genre = {
+export type GenreMovie = {
   id: number;
-  name: string;
+  title: string;
+  posterPath: string | null;
+  backdropPath: string | null;
+  voteAverage: number;
+  releaseDate: string | null;
 };
 
 type GenreResponse = {
@@ -15,7 +24,12 @@ type GenreResponse = {
 
 type DiscoverResponse = {
   results: Array<{
+    id: number;
+    title: string;
+    poster_path: string | null;
     backdrop_path: string | null;
+    vote_average: number;
+    release_date: string | null;
   }>;
 };
 
@@ -25,9 +39,7 @@ type GenreWithBackdropCandidates = Genre & {
 
 const MAX_BACKDROP_CANDIDATES = 12;
 
-export async function getGenresWithBackdrops(
-  accessToken: string,
-): Promise<GenreWithBackdrop[]> {
+export async function getMovieGenres(accessToken: string): Promise<Genre[]> {
   const res = await fetch("https://api.themoviedb.org/3/genre/movie/list", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -39,6 +51,13 @@ export async function getGenresWithBackdrops(
   }
 
   const { genres } = (await res.json()) as GenreResponse;
+  return genres;
+}
+
+export async function getGenresWithBackdrops(
+  accessToken: string,
+): Promise<GenreWithBackdrop[]> {
+  const genres = await getMovieGenres(accessToken);
 
   const genresWithBackdropCandidates: GenreWithBackdropCandidates[] = await Promise.all(
     genres.map(async (genre) => {
@@ -102,4 +121,33 @@ export async function getGenresWithBackdrops(
       backdrop: selectedBackdrop ?? backdropCandidates[0] ?? null,
     };
   });
+}
+
+export async function getMoviesByGenre(
+  accessToken: string,
+  genreId: number,
+): Promise<GenreMovie[]> {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=1`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`TMDB request failed with status ${res.status}.`);
+  }
+
+  const { results } = (await res.json()) as DiscoverResponse;
+
+  return results.map((movie) => ({
+    id: movie.id,
+    title: movie.title,
+    posterPath: movie.poster_path,
+    backdropPath: movie.backdrop_path,
+    voteAverage: movie.vote_average,
+    releaseDate: movie.release_date,
+  }));
 }
