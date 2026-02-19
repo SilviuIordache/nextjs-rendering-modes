@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Rendering Modes Demo",
+  title: "Next.js Render Modes",
   description: "Demo app for SSG, ISR, SSR, and CSR routes",
 };
 
