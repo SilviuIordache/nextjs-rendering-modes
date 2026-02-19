@@ -2,7 +2,7 @@ import RenderModeCard from "@/app/components/RenderModeCard";
 import MovieCard from "@/app/components/MovieCard";
 import { getTrendingMovies } from "@/app/genres/tmdb";
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export default async function TrendingPage() {
   const generatedAtIso = new Date().toISOString();
@@ -30,7 +30,7 @@ export default async function TrendingPage() {
             mode="ISR"
             modeIcon="isr"
             modeFullName="Incremental Static Regeneration"
-            modeDescription="Revalidates in background every 60s."
+            modeDescription="Revalidates in background every 10 minutes."
             generatedAtIso={generatedAtIso}
           />
         </header>
