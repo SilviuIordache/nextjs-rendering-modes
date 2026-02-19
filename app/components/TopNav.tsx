@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useWatchlistCount } from "@/app/lib/watchlist";
 
 const navItems = [
   { href: "/genres", label: "Genres" },
@@ -12,6 +13,7 @@ const navItems = [
 
 export default function TopNav() {
   const pathname = usePathname();
+  const watchlistCount = useWatchlistCount();
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur dark:border-white/15 dark:bg-black/85">
@@ -30,7 +32,9 @@ export default function TopNav() {
                   : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               }`}
             >
-              {item.label}
+              {item.href === "/watchlist"
+                ? `${item.label} (${watchlistCount})`
+                : item.label}
             </Link>
           );
         })}

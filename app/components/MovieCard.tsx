@@ -1,4 +1,7 @@
+import WatchlistButton from "./WatchlistButton";
+
 type MovieCardProps = {
+  movieId: number;
   title: string;
   posterPath: string | null;
   backdropPath: string | null;
@@ -15,6 +18,7 @@ function formatReleaseYear(releaseDate: string | null) {
 }
 
 export default function MovieCard({
+  movieId,
   title,
   posterPath,
   backdropPath,
@@ -28,14 +32,17 @@ export default function MovieCard({
 
   return (
     <article className="overflow-hidden rounded-xl border border-black/10 bg-white shadow-sm dark:border-white/15 dark:bg-zinc-900">
-      {imageUrl ? (
-        <div
-          className="aspect-[2/3] w-full bg-cover bg-center"
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        />
-      ) : (
-        <div className="aspect-[2/3] w-full bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800" />
-      )}
+      <div className="relative">
+        {imageUrl ? (
+          <div
+            className="aspect-[2/3] w-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${imageUrl})` }}
+          />
+        ) : (
+          <div className="aspect-[2/3] w-full bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800" />
+        )}
+        <WatchlistButton movieId={movieId} movieTitle={title} />
+      </div>
       <div className="space-y-2 p-4">
         <h2 className="line-clamp-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
           {title}

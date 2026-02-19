@@ -78,6 +78,7 @@ export default async function GenrePage({ params }: GenrePageProps) {
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
+              movieId={movie.id}
               title={movie.title}
               posterPath={movie.posterPath}
               backdropPath={movie.backdropPath}
