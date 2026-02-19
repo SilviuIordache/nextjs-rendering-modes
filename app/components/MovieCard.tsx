@@ -35,11 +35,11 @@ export default function MovieCard({
       <div className="relative">
         {imageUrl ? (
           <div
-            className="aspect-[2/3] w-full bg-cover bg-center"
+            className="aspect-[16/10] w-full bg-cover bg-center sm:aspect-[2/3]"
             style={{ backgroundImage: `url(${imageUrl})` }}
           />
         ) : (
-          <div className="aspect-[2/3] w-full bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800" />
+          <div className="aspect-[16/10] w-full bg-gradient-to-br from-zinc-200 to-zinc-300 sm:aspect-[2/3] dark:from-zinc-700 dark:to-zinc-800" />
         )}
         <WatchlistButton movieId={movieId} movieTitle={title} />
       </div>

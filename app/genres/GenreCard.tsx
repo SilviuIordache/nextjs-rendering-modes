@@ -12,7 +12,7 @@ export default function GenreCard({ name, backdrop }: GenreCardProps) {
     <article className="group relative overflow-hidden rounded-xl border border-black/10 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/15 dark:bg-zinc-900">
       {backdropUrl ? (
         <div
-          className="h-36 w-full bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+          className="h-36 w-full bg-cover bg-center grayscale-[60%] transition duration-300 group-hover:scale-105 group-hover:grayscale-0"
           style={{ backgroundImage: `url(${backdropUrl})` }}
         />
       ) : (
