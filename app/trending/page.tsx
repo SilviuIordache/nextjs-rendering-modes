@@ -28,7 +28,9 @@ export default async function TrendingPage() {
           </div>
           <GeneratedAtCard
             mode="ISR"
-            modeDescription="Regenerated in the background every 60s."
+            modeIcon="isr"
+            modeFullName="Incremental Static Regeneration"
+            modeDescription="Revalidates in background every 60s."
             generatedAtIso={generatedAtIso}
           />
         </header>

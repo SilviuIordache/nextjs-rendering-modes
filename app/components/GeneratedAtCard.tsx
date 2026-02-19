@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Clock3, RefreshCw, Server, Wrench } from "lucide-react";
 
 type GeneratedAtCardProps = {
   mode: string;
+  modeFullName: string;
   modeDescription: string;
+  modeIcon: "ssg" | "isr" | "ssr";
   generatedAtIso: string;
   showRelative?: boolean;
 };
@@ -35,7 +38,9 @@ function formatRelative(iso: string) {
 
 export default function GeneratedAtCard({
   mode,
+  modeFullName,
   modeDescription,
+  modeIcon,
   generatedAtIso,
   showRelative = false,
 }: GeneratedAtCardProps) {
@@ -52,17 +57,38 @@ export default function GeneratedAtCard({
     return () => window.clearInterval(intervalId);
   }, [generatedAtIso, showRelative]);
 
+  const ModeIcon = {
+    ssg: Wrench,
+    isr: RefreshCw,
+    ssr: Server,
+  }[modeIcon];
+
   return (
-    <aside className="rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm dark:border-white/15 dark:bg-zinc-900">
-      <p className="text-lg font-bold uppercase tracking-[0.12em] text-zinc-300 dark:text-zinc-200">
-        {mode}
-      </p>
-      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+    <aside className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm sm:w-[380px] dark:border-white/15 dark:bg-zinc-900">
+      <div className="space-y-1.5">
+        <div className="flex items-center gap-2.5">
+          <ModeIcon
+            className="h-7 w-7 text-zinc-100"
+            strokeWidth={2.2}
+            aria-hidden
+          />
+          <p className="text-3xl font-extrabold uppercase leading-none tracking-[0.08em] text-zinc-200 dark:text-zinc-100">
+            {mode}
+          </p>
+        </div>
+        <p className="text-xs font-semibold tracking-[0.04em] text-zinc-500 dark:text-zinc-400">
+          {modeFullName}
+        </p>
+      </div>
+      <p className="mt-3 text-sm text-zinc-400 dark:text-zinc-400">
         {modeDescription}
       </p>
-      <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-200">
-        Generated at: {absolute} UTC
-        {showRelative ? ` (${relative})` : ""}
+      <p className="mt-3 inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <Clock3 className="h-[12px] w-[12px]" aria-hidden />
+        <span>
+          {absolute}
+          {showRelative ? ` (${relative})` : ""}
+        </span>
       </p>
     </aside>
   );

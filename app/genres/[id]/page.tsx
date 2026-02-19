@@ -69,7 +69,9 @@ export default async function GenrePage({ params }: GenrePageProps) {
           </div>
           <GeneratedAtCard
             mode="SSG"
-            modeDescription="Rendered at build time only."
+            modeIcon="ssg"
+            modeFullName="Static Site Generation"
+            modeDescription="Built once at deploy time."
             generatedAtIso={generatedAtIso}
             showRelative
           />

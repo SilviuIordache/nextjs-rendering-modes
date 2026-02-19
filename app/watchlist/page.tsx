@@ -20,7 +20,9 @@ export default function WatchlistPage() {
           </div>
           <GeneratedAtCard
             mode="SSR"
-            modeDescription="Rendered fresh on every request."
+            modeIcon="ssr"
+            modeFullName="Server-Side Rendering"
+            modeDescription="Rendered on each request."
             generatedAtIso={generatedAtIso}
           />
         </header>
