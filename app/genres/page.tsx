@@ -1,6 +1,6 @@
 import Link from "next/link";
+import GeneratedAtCard from "@/app/components/GeneratedAtCard";
 import GenreCard from "./GenreCard";
-import SsgInfoCard from "./SsgInfoCard";
 import { getGenresWithBackdrops } from "./tmdb";
 
 export const dynamic = "force-static";
@@ -27,7 +27,11 @@ export default async function GenresPage() {
               Pick a genre to continue to its page.
             </p>
           </div>
-          <SsgInfoCard generatedAtIso={generatedAtIso} />
+          <GeneratedAtCard
+            mode="SSG"
+            generatedAtIso={generatedAtIso}
+            showRelative
+          />
         </header>
 
         <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

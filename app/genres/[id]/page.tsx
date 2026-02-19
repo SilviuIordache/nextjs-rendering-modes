@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import GeneratedAtCard from "@/app/components/GeneratedAtCard";
 import MovieCard from "@/app/components/MovieCard";
-import SsgInfoCard from "../SsgInfoCard";
 import { getMovieGenres, getMoviesByGenre } from "../tmdb";
 
 type GenrePageProps = {
@@ -67,7 +67,11 @@ export default async function GenrePage({ params }: GenrePageProps) {
               Popular titles in this genre.
             </p>
           </div>
-          <SsgInfoCard generatedAtIso={generatedAtIso} />
+          <GeneratedAtCard
+            mode="SSG"
+            generatedAtIso={generatedAtIso}
+            showRelative
+          />
         </header>
 
         <section className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

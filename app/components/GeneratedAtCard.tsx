@@ -2,6 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+type GeneratedAtCardProps = {
+  mode: string;
+  generatedAtIso: string;
+  showRelative?: boolean;
+};
+
 function formatGeneratedAt(iso: string) {
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
@@ -26,24 +32,32 @@ function formatRelative(iso: string) {
   return `${hours}h ago`;
 }
 
-export default function SsgInfoCard({ generatedAtIso }: { generatedAtIso: string }) {
+export default function GeneratedAtCard({
+  mode,
+  generatedAtIso,
+  showRelative = false,
+}: GeneratedAtCardProps) {
   const absolute = useMemo(() => formatGeneratedAt(generatedAtIso), [generatedAtIso]);
   const [relative, setRelative] = useState("just now");
 
   useEffect(() => {
+    if (!showRelative) return;
+
     const update = () => setRelative(formatRelative(generatedAtIso));
     update();
     const intervalId = window.setInterval(update, 60_000);
+
     return () => window.clearInterval(intervalId);
-  }, [generatedAtIso]);
+  }, [generatedAtIso, showRelative]);
 
   return (
     <aside className="rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm dark:border-white/15 dark:bg-zinc-900">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
-        SSG
+        {mode}
       </p>
       <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-200">
-        Generated at: {absolute} UTC ({relative})
+        Generated at: {absolute} UTC
+        {showRelative ? ` (${relative})` : ""}
       </p>
     </aside>
   );

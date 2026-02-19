@@ -1,19 +1,8 @@
+import GeneratedAtCard from "@/app/components/GeneratedAtCard";
 import MovieCard from "@/app/components/MovieCard";
 import { getTrendingMovies } from "@/app/genres/tmdb";
 
 export const revalidate = 60;
-
-function formatGeneratedAt(iso: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-    timeZone: "UTC",
-  }).format(new Date(iso));
-}
 
 export default async function TrendingPage() {
   const generatedAtIso = new Date().toISOString();
@@ -37,14 +26,7 @@ export default async function TrendingPage() {
               ISR demo: this page revalidates every 60 seconds.
             </p>
           </div>
-          <aside className="rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm dark:border-white/15 dark:bg-zinc-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
-              ISR
-            </p>
-            <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-200">
-              Generated at: {formatGeneratedAt(generatedAtIso)} UTC
-            </p>
-          </aside>
+          <GeneratedAtCard mode="ISR" generatedAtIso={generatedAtIso} />
         </header>
 
         <section className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
