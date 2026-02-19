@@ -151,3 +151,26 @@ export async function getMoviesByGenre(
     releaseDate: movie.release_date,
   }));
 }
+
+export async function getTrendingMovies(accessToken: string): Promise<GenreMovie[]> {
+  const res = await fetch("https://api.themoviedb.org/3/trending/movie/day", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`TMDB request failed with status ${res.status}.`);
+  }
+
+  const { results } = (await res.json()) as DiscoverResponse;
+
+  return results.map((movie) => ({
+    id: movie.id,
+    title: movie.title,
+    posterPath: movie.poster_path,
+    backdropPath: movie.backdrop_path,
+    voteAverage: movie.vote_average,
+    releaseDate: movie.release_date,
+  }));
+}
