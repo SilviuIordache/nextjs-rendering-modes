@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useWatchlistCount } from "@/app/lib/watchlist";
 
 const navItems = [
+  { href: "/", label: "Home" },
   { href: "/genres", label: "Genres" },
   { href: "/trending", label: "Trending" },
   { href: "/watchlist", label: "Watchlist" },
@@ -20,7 +21,9 @@ export default function TopNav() {
       <nav className="mx-auto flex h-14 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
         {navItems.map((item) => {
           const isActive =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
+            item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <Link
