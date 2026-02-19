@@ -26,7 +26,11 @@ export default async function TrendingPage() {
               ISR demo: this page revalidates every 60 seconds.
             </p>
           </div>
-          <GeneratedAtCard mode="ISR" generatedAtIso={generatedAtIso} />
+          <GeneratedAtCard
+            mode="ISR"
+            modeDescription="Regenerated in the background every 60s."
+            generatedAtIso={generatedAtIso}
+          />
         </header>
 
         <section className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

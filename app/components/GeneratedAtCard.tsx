@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type GeneratedAtCardProps = {
   mode: string;
+  modeDescription: string;
   generatedAtIso: string;
   showRelative?: boolean;
 };
@@ -34,6 +35,7 @@ function formatRelative(iso: string) {
 
 export default function GeneratedAtCard({
   mode,
+  modeDescription,
   generatedAtIso,
   showRelative = false,
 }: GeneratedAtCardProps) {
@@ -52,8 +54,11 @@ export default function GeneratedAtCard({
 
   return (
     <aside className="rounded-xl border border-black/10 bg-white px-4 py-3 shadow-sm dark:border-white/15 dark:bg-zinc-900">
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
+      <p className="text-lg font-bold uppercase tracking-[0.12em] text-zinc-300 dark:text-zinc-200">
         {mode}
+      </p>
+      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        {modeDescription}
       </p>
       <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-200">
         Generated at: {absolute} UTC

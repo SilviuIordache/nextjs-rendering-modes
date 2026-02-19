@@ -69,6 +69,7 @@ export default async function GenrePage({ params }: GenrePageProps) {
           </div>
           <GeneratedAtCard
             mode="SSG"
+            modeDescription="Rendered at build time only."
             generatedAtIso={generatedAtIso}
             showRelative
           />
