@@ -8,7 +8,7 @@ type GenrePageProps = {
   params: Promise<{ id: string }>;
 };
 
-export const dynamic = "force-static";
+// fallback that tells Next.js to render a 404 page for any genre ID that isn't generated at build time
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
