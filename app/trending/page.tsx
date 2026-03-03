@@ -2,7 +2,8 @@ import RenderModeCard from "@/app/components/RenderModeCard";
 import MovieCard from "@/app/components/MovieCard";
 import { getTrendingMovies } from "@/app/genres/tmdb";
 
-export const revalidate = 600;
+// Revalidate the page every 1 hour (3600 seconds)
+export const revalidate = 60 * 60 * 1;
 
 export default async function TrendingPage() {
   const generatedAtIso = new Date().toISOString();
