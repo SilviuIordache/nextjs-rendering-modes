@@ -35,6 +35,15 @@ type DiscoverResponse = {
   }>;
 };
 
+type TmdbMovieResponse = {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  vote_average: number;
+  release_date: string | null;
+};
+
 type GenreWithBackdropCandidates = Genre & {
   backdropCandidates: string[];
 };
@@ -151,4 +160,33 @@ export async function getTrendingMovies(accessToken: string): Promise<GenreMovie
     voteAverage: movie.vote_average,
     releaseDate: movie.release_date,
   }));
+}
+
+export async function getMoviesByIds(
+  accessToken: string,
+  ids: number[],
+): Promise<GenreMovie[]> {
+  const movies = await Promise.all(
+    ids.map(async (id) => {
+      try {
+        const movie = await tmdbGetJson<TmdbMovieResponse>({
+          accessToken,
+          path: `/movie/${id}`,
+        });
+
+        return {
+          id: movie.id,
+          title: movie.title,
+          posterPath: movie.poster_path,
+          backdropPath: movie.backdrop_path,
+          voteAverage: movie.vote_average,
+          releaseDate: movie.release_date,
+        } satisfies GenreMovie;
+      } catch {
+        return null;
+      }
+    }),
+  );
+
+  return movies.filter((movie): movie is GenreMovie => movie !== null);
 }

@@ -5,6 +5,7 @@ import {
   useWatchlistMovieIds,
 } from "@/app/lib/watchlist";
 import { Heart } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 
 type WatchlistButtonProps = {
   movieId: number;
@@ -15,11 +16,16 @@ export default function WatchlistButton({
   movieId,
   movieTitle,
 }: WatchlistButtonProps) {
+  const pathname = usePathname();
+  const router = useRouter();
   const watchlistMovieIds = useWatchlistMovieIds();
   const isInWatchlist = watchlistMovieIds.includes(movieId);
 
   const toggleWatchlist = () => {
     toggleWatchlistMovie(movieId);
+    if (pathname === "/watchlist") {
+      router.refresh();
+    }
   };
 
   return (

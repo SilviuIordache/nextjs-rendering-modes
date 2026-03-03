@@ -1,33 +1,34 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
+import {
+  WATCHLIST_COOKIE_KEY,
+  parseWatchlistCookieValue,
+  serializeWatchlistCookieValue,
+} from "@/app/lib/watchlist-shared";
 
-export const WATCHLIST_STORAGE_KEY = "watchlist_movie_ids";
 export const WATCHLIST_UPDATED_EVENT = "watchlist:updated";
 
-function parseWatchlistRaw(raw: string): number[] {
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter((value): value is number => typeof value === "number");
-  } catch {
-    return [];
-  }
+function getWatchlistCookieRaw() {
+  if (typeof document === "undefined") return "";
+  const cookieParts = document.cookie.split("; ");
+  const cookieEntry = cookieParts.find((part) =>
+    part.startsWith(`${WATCHLIST_COOKIE_KEY}=`),
+  );
+  if (!cookieEntry) return "";
+  return cookieEntry.slice(`${WATCHLIST_COOKIE_KEY}=`.length);
 }
 
 function getWatchlistSnapshot() {
-  if (typeof window === "undefined") return "[]";
-  return window.localStorage.getItem(WATCHLIST_STORAGE_KEY) ?? "[]";
+  return getWatchlistCookieRaw();
 }
 
 function subscribeToWatchlistStore(callback: () => void) {
   if (typeof window === "undefined") return () => {};
 
-  window.addEventListener("storage", callback);
   window.addEventListener(WATCHLIST_UPDATED_EVENT, callback);
 
   return () => {
-    window.removeEventListener("storage", callback);
     window.removeEventListener(WATCHLIST_UPDATED_EVENT, callback);
   };
 }
@@ -36,10 +37,10 @@ export function useWatchlistMovieIds() {
   const raw = useSyncExternalStore(
     subscribeToWatchlistStore,
     getWatchlistSnapshot,
-    () => "[]",
+    () => "",
   );
 
-  return useMemo(() => parseWatchlistRaw(raw), [raw]);
+  return useMemo(() => parseWatchlistCookieValue(raw), [raw]);
 }
 
 export function useWatchlistCount() {
@@ -49,7 +50,7 @@ export function useWatchlistCount() {
 export function toggleWatchlistMovie(movieId: number) {
   if (typeof window === "undefined") return;
 
-  const ids = new Set(parseWatchlistRaw(getWatchlistSnapshot()));
+  const ids = new Set(parseWatchlistCookieValue(getWatchlistSnapshot()));
 
   if (ids.has(movieId)) {
     ids.delete(movieId);
@@ -57,6 +58,6 @@ export function toggleWatchlistMovie(movieId: number) {
     ids.add(movieId);
   }
 
-  window.localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify([...ids]));
+  document.cookie = `${WATCHLIST_COOKIE_KEY}=${serializeWatchlistCookieValue([...ids])}; path=/; max-age=31536000; samesite=lax`;
   window.dispatchEvent(new CustomEvent(WATCHLIST_UPDATED_EVENT));
 }
