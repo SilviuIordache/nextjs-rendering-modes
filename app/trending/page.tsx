@@ -24,14 +24,14 @@ export default async function TrendingPage() {
               Trending Movies
             </h1>
             <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              ISR demo: this page revalidates every 60 seconds.
+              ISR demo: this page revalidates every 1 hour.
             </p>
           </div>
           <RenderModeCard
             mode="ISR"
             modeIcon="isr"
             modeFullName="Incremental Static Regeneration"
-            modeDescription="Revalidates in background every 10 minutes."
+            modeDescription="Revalidates in background every 1 hour."
             generatedAtIso={generatedAtIso}
             showRelative
           />
