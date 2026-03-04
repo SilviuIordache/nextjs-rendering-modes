@@ -1,31 +1,30 @@
 import Link from "next/link";
-import { Monitor, RefreshCw, Server, Wrench } from "lucide-react";
 
 const routes = [
   {
     mode: "SSG",
-    icon: Wrench,
+    icon: "🧱",
     title: "Static Site Generation",
     description: "Built once at deploy time.",
     href: "/genres",
   },
   {
     mode: "ISR",
-    icon: RefreshCw,
+    icon: "♻️",
     title: "Incremental Static Regeneration",
     description: "Revalidates in the background on an interval.",
     href: "/trending",
   },
   {
     mode: "SSR",
-    icon: Server,
+    icon: "🖥️",
     title: "Server-Side Rendering",
     description: "Rendered fresh on every request.",
     href: "/watchlist",
   },
   {
     mode: "CSR",
-    icon: Monitor,
+    icon: "🌎",
     title: "Client-Side Rendering",
     description: "Browser-driven interactivity and data fetching.",
     href: "/explore",
@@ -53,9 +52,11 @@ export default function HomePage() {
               href={route.href}
               className="rounded-xl border border-white/10 bg-zinc-900/70 p-5 transition hover:border-white/20 hover:bg-zinc-900"
             >
-              <div className="inline-flex items-center gap-2.5">
-                <route.icon className="h-6 w-6 text-zinc-100" aria-hidden />
-                <p className="text-2xl font-extrabold uppercase tracking-[0.08em] text-zinc-100">
+              <div className="inline-flex items-center gap-3.5">
+                <span className="text-[2.4rem] leading-none" aria-hidden>
+                  {route.icon}
+                </span>
+                <p className="text-4xl font-extrabold uppercase tracking-[0.08em] text-zinc-100">
                   {route.mode}
                 </p>
               </div>
